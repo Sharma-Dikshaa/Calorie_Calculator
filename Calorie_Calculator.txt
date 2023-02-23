@@ -1,0 +1,113 @@
+'''
+This project (Calorie Calculator) helps individual to find correct caloric goal to be healthy 
+'''
+
+# User information 
+def user_info():
+    
+    name = input("Please enter your name : ")
+    print(f'Welcome {name}\n')
+    age = int(input('What is your age : '))
+    gender = input('What is your gender : ').lower()
+    weight = float(input('What is your weight in kgs : '))
+    height = float(input('What is your height in cm : '))
+
+# BMR --> Basal Metabolic Rate 
+    # Men: BMR = 88.362 + (13.397 x weight in kg) + (4.799 x height in cm) – (5.677 x age in years)
+    if gender == 'male':
+        c1 = 88.362 
+        hm = 4.799 * height
+        wm = 13.397 * weight
+        am = 5.677 * age
+    
+    # Women: BMR = 447.593 + (9.247 x weight in kg) + (3.098 x height in cm) – (4.330 x age in years)
+    elif gender == 'female':
+        c1 = 447.593
+        hm = 3.098 * height
+        wm = 9.247 * weight
+        am = 4.330 * age
+
+    # Final BMR result
+    bmr_result = c1 + hm + wm - am
+    
+    return(int(bmr_result))
+
+# Activity level ---> as per BMR
+def calculate_activity(bmr_result): 
+
+    activity_level = input('''
+What is your activity level --->
+    
+1. None
+2. Light
+3. Moderate
+4. Heavy
+5. Extreme 
+    
+---> ''').lower()
+
+    if (activity_level == 'none') or (activity_level == '1') :
+        activity_level = 1.2 * bmr_result
+    elif (activity_level == 'light') or (activity_level == '2'):
+        activity_level = 1.375 * bmr_result
+    elif (activity_level == 'moderate') or (activity_level == '3'):
+        activity_level = 1.55 * bmr_result
+    elif (activity_level == 'heavy') or (activity_level == '4'):
+        activity_level = 1.725 * bmr_result
+    elif (activity_level == 'extreme') or (activity_level == '5'):
+        activity_level = 1.9 * bmr_result
+
+    return(int(activity_level))
+
+# Final Goal
+def gain_or_lose(activity_level):
+
+    goals = input('''
+Do you want to -->
+
+1. Lose 
+2. Maintain 
+3. Gain  
+    
+---> ''').lower()
+
+    if (goals == 'lose'):
+        calories = activity_level - 500
+
+    elif (goals == 'maintain'):
+        calories = activity_level
+    
+    elif (goals == 'gain'):
+
+        # How much to gain ?? 
+        gain = int(input('''\nGain ?? 
+
+1. 1 kg per week
+2. 2 kg per week
+
+---> '''))
+        
+        if gain == 1: 
+            calories = activity_level + 500
+        elif gain == 2:
+            calories = activity_level + 1000
+    
+    # Final Outcome
+    print(f'\nIn order to {goals} weight, your daily caloric goal should be {int(calories)} !\n\n')
+
+# Main()
+while True : 
+    print("\nCalorie Calculator".upper())
+    print()
+    gain_or_lose(calculate_activity(user_info()))
+
+    # Code for Continuing or Quiting
+    choose = input("Do you want to continue (Y/N) ---> ").lower()
+    if choose == 'y':
+        continue
+    elif choose == 'n':
+        print("\nQuiting")
+        break
+    else:
+        print("\nYou entered NOTHING !")
+        break
